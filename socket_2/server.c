@@ -5,7 +5,6 @@
 
 #include <arpa/inet.h>
 
-
 #define PORT_NUMBER 8181
 
 int main (int argc, char **argv)
@@ -80,6 +79,7 @@ int main (int argc, char **argv)
 
 
     // clean up
+    printf ("cleaning up...\n")
     close (listen_sock_fd);
     close (accept_sock_fd);
     listen_sock_fd = 0;
