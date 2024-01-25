@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <stdbool.h>
 #include <unistd.h>
 
 #include <sys/types.h>
@@ -9,6 +10,78 @@
 #include <arpa/inet.h>
 
 #define PORT_NUMBER 8181
+
+
+bool is_valid_ip_address (char *ip_address)
+{
+    // logic
+    return true;
+}
+
+bool is_port_number_valid (int port_number)
+{
+    // logic
+    return true;
+}
+
+int create_tcp_ipv4_socket (char *ip_address, int port_number)
+{
+    printf ("%s:: entry\n", __func__);
+    if (is_valid_ip_address (ip_address) == false)
+    {
+        printf ("%s:: invalid ip address... exiting\n", __func__);
+	return -1;
+    }
+    if (is_port_number_valid (port_number) == false)
+    {
+        printf ("%s:: invalid port number... exiting\n", __func__);
+        return -1;
+    }
+
+    // success = valid socket fd
+    // failure = -1
+    int tcp_ipv4_listen_sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (tcp_ipv4_listen_sock < 0)
+    {
+        printf ("%s:: error in creating socket... exiting\n", __func__);
+        perror ("socket");
+	return -1;
+    }
+    printf ("%s:: socket created\n", __func__);
+
+    struct sockaddr_in server_ipv4_addr;
+    server_ipv4_addr.sin_family = AF_INET;
+    server_ipv4_addr.sin_port = htons (port_number);
+
+    // success = 1
+    // failure <= 0
+    int status = inet_pton (AF_INET, ip_address, &(server_ipv4_addr.sin_addr.s_addr));
+    if (status <= 0)
+    {
+        perror ("inet_pton");
+
+	// clean up
+	close (tcp_ipv4_listen_sock);
+	return -1;
+    }
+    printf ("%s:: socket structure updated\n", __func__);
+
+    // success = 0
+    // failure = -1
+    status = bind (tcp_ipv4_listen_sock, (struct sockaddr*) &server_ipv4_addr, sizeof (struct sockaddr_in));
+    if (status < 0)
+    {
+        perror ("bind");
+
+	// clean up
+	close (tcp_ipv4_listen_sock);
+	return -1;
+    }
+    printf ("%s:: socket bind success\n", __func__);
+    printf ("%s:: returning socket fd:: %d\n", __func__, tcp_ipv4_listen_sock);
+
+    return tcp_ipv4_listen_sock;
+}
 
 int main (int argc, char **argv)
 {
