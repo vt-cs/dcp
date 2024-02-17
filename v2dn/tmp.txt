@@ -1,0 +1,108 @@
+
+fd = socket( , ,);
+sock_addr
+client => connect
+server <= accept
+
+new sock_fd => read/write
+
+beacon
+wifi client -> association | application - ccsp-wifi-agent - broacom-wifi{userspace <-> kernel}
+
+nvram ()
+wlcsm ()
+
+wl.ko
+
+struct node
+{
+    int data;
+    char name[32];
+    double temp;
+    struct node *next_node;
+};
+
+struct node obj;
+
+struct node *serv_obj;
+serv_obj = (struct node*) malloc(sizeof(struct node));
+
+send(sock_fd, &obj, sizeof(obj), 0);
+
+if (recv(sock_fd, serv_obj, len, 0) == -1)
+{
+     // error check
+}
+int serv_int_data = serv_obj->data;
+
+string = "arbitrary\0"
+char buf[128]
+
+1 - 128
+2 - buf - 22+\0
+while(recv(sock_fd, buf, len, 0))
+{
+    // handle
+}
+
+
+void add(int a, int b)
+{
+    //
+}
+
+void (*func_ptr_add)(int, int)
+
+func_ptr_add = add;
+
+(*func_ptr_add)(4,5)
+
+pthread_t tid;
+
+void* func_name(void *args)
+{
+
+}
+
+pthread_create(&tid, func_name, NULL, );
+pthread_join(tid, NULL);
+
+
+
+
+a =   0000
+
+tmp = 0000
+pos << user
+while (pos)
+{
+    
+}
+
+mask= 0100
+a =   0100
+int a = 0;
+int mask =  4;
+ a = a^mask;
+
+a =    0001
+mask = 0100
+
+result = 0101
+a = 1;
+
+a = a^mask
+
+xor
+a  b
+0  0  0
+0  1  1
+1  0  1
+1  1  0
+
+
+
+
+
+
+
