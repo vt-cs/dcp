@@ -15,13 +15,13 @@
 
 bool is_valid_ip_address (char *ip_address)
 {
-    // logic
+    // TODO: logic
     return true;
 }
 
 bool is_port_number_valid (int port_number)
 {
-    // logic
+    // TODO: logic
     return true;
 }
 
