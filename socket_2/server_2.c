@@ -93,7 +93,7 @@ int main (int argc, char **argv)
     int port_number = 8181;
     char ipv4_address_server[INET_ADDRSTRLEN] = {0};
 
-    memcpy (ipv4_address_server, "192.168.165.183", INET_ADDRSTRLEN);
+    memcpy (ipv4_address_server, "127.0.0.1", INET_ADDRSTRLEN);
 
     server_sock_fd = create_tcp_ipv4_socket(ipv4_address_server, port_number);
     if (server_sock_fd < 0)
