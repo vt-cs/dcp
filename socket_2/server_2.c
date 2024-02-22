@@ -11,6 +11,7 @@
 #include <arpa/inet.h>
 
 #define PORT_NUMBER 8181
+#define SERVER_HELLO "HTTP/1.1 200 OK\r\nContent-Length: 13\r\nConnection: close\r\n\r\nHello, world!"
 
 
 bool is_valid_ip_address (char *ip_address)
@@ -154,9 +155,11 @@ int main (int argc, char **argv)
             perror ("select");
 	}
 
-	if (FD_ISSET (max_sock_fd, &readfds))
+	// if something happened on server_sock_fd, then it is a new connection
+	if (FD_ISSET (server_sock_fd, &readfds))
 	{
-            int client_address_len = sizeof (struct sockaddr_in);
+            socklen_t client_address_len = sizeof (struct sockaddr_in);
+	    struct sockaddr_in client_address;
             int accept_sock_fd = accept (server_sock_fd, (struct sockaddr*) &client_address, &client_address_len);
 	    if (accept_sock_fd < 0)
 	    {
@@ -164,6 +167,44 @@ int main (int argc, char **argv)
 	    }
 	    printf ("connection accepted from:: %s:%d\n", inet_ntoa(client_address.sin_addr), ntohs(client_address.sin_port));
 	    send (accept_sock_fd, "hello from server", 18, 0);
+
+	    // add new socket to our array
+	    for (int i=0; i<max_client; ++i)
+	    {
+                // if position is empty
+                if (client_sockets[i] == 0)
+		{
+                    client_sockets[i] = accept_sock_fd;
+		    break;
+		}
+	    }
+	}
+
+	for (int i=0; i<max_client; ++i)
+	{
+            int sock_fd = client_sockets[i];
+	    char read_buffer [1024] = {0};
+	    struct sockaddr_in client_address;
+	    socklen_t client_address_len = sizeof (struct sockaddr_in);
+	    if (FD_ISSET (sock_fd, &readfds))
+	    {
+                // check if connection is closing
+		int valread = 0;
+                if ((valread = read(sock_fd, read_buffer, sizeof (read_buffer)-1)) == 0)
+		{
+                    getpeername (sock_fd, (struct sockaddr*) &client_address, (socklen_t*) &client_address_len);
+                    printf ("host disconnected:: IP - %s, PORT - %d\n\n", inet_ntoa (client_address.sin_addr), ntohs (client_address.sin_port));
+
+		    close (sock_fd);
+		    client_sockets[i] = 0;
+		}
+		// else echo back the same message to client that came in
+		else
+		{
+                    read_buffer [valread] = '\0';
+                    send (sock_fd, read_buffer, strlen (read_buffer), 0);
+		}
+	    }
 	}
     }
 
