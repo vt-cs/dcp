@@ -17,6 +17,9 @@ class Complex
 	Complex (int, int);
 	Complex (const Complex&);
 	void operator= (const Complex&);
+	Complex operator+ (const Complex&);
+
+	void print ();
 };
 
 Complex::Complex () : real(0), imag(0)
@@ -50,6 +53,21 @@ void Complex::operator= (const Complex &c_obj)
     }
 }
 
+Complex Complex::operator+ (const Complex &c_obj)
+{
+    std::cout << "+ operator overloading\n";
+    Complex temp;
+    temp.real = real+c_obj.real;
+    temp.imag = imag+c_obj.imag;
+
+    return temp;
+}
+
+void Complex::print ()
+{
+    std::cout << "real: " << real << ", imag: " << imag << std::endl;
+}
+
 int main (int argc, char **argv)
 {
     Complex a1;
@@ -58,5 +76,17 @@ int main (int argc, char **argv)
     Complex a4;
     a4 = a3;
     a4 = a4;
+    Complex a5 = a3+a4;
+    a5 = a5;
+    std::cout << "\na1::\n";
+    a1.print ();
+    std::cout << "\na2::\n";
+    a2.print ();
+    std::cout << "\na3::\n";
+    a3.print ();
+    std::cout << "\na4::\n";
+    a4.print ();
+    std::cout << "\na5::\n";
+    a5.print ();
     return 0;
 }
