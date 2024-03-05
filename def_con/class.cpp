@@ -5,8 +5,8 @@ using namespace std;
 class Complex
 {
     public:
-        int *real;
-	int *imag;
+        int real;
+	int imag;
     public:
         Complex()
 	{
