@@ -36,30 +36,26 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 
 void testcase_1(std::vector<int> &nums, int &target, std::vector<int> &expected_result);
 void testcase_2(std::vector<int> &nums, int &target, std::vector<int> &expected_result);
-class solution;
+class Solution;
 
-class solution
-{
-    public:
-        std::vector<int> two_sum(std::vector<int> &nums, int target)
-	{
-            std::vector<int> result;
-            std::unordered_map<int, int> hash;
-	    for(unsigned int i=0; i<nums.size(); ++i)
-	    {
-                if (hash.find(target-nums[i]) != hash.end())
-		{
-		    result.push_back(hash[target-nums[i]]);
-		    result.push_back(i);
-		    return result;
-		}
-		else
-		{
-                    hash[nums[i]] = i;
-		}
-	    }
-	    return result;
-	}
+class Solution {
+public:
+    std::vector<int> twoSum(std::vector<int>& nums, int target)
+    {
+        std::vector<int> result;
+        std::unordered_map<int, int> umap;
+        for(unsigned int arr_index=0; arr_index<nums.size(); ++arr_index)
+        {
+            if (umap.find(target-nums[arr_index]) != umap.end())
+            {
+                result.push_back(umap[target-nums[arr_index]]);
+                result.push_back(arr_index);
+                break;
+            }
+            umap[nums[arr_index]] = arr_index;
+        }
+        return result;
+    }
 };
 
 int main(int argc, char **argv)
@@ -69,11 +65,11 @@ int main(int argc, char **argv)
     std::vector<int> expected_result;
     std::vector<int> obtained_result;
 
-    solution ref_obj;
+    Solution ref_obj;
 
     testcase_1(nums, target, expected_result);
 
-    obtained_result = ref_obj.two_sum(nums, target);
+    obtained_result = ref_obj.twoSum(nums, target);
 
     std::sort(expected_result.begin(), expected_result.end());
     std::sort(obtained_result.begin(), obtained_result.end());
@@ -88,7 +84,7 @@ int main(int argc, char **argv)
     
     testcase_2(nums, target, expected_result);
 
-    obtained_result = ref_obj.two_sum(nums, target);
+    obtained_result = ref_obj.twoSum(nums, target);
 
     std::sort(expected_result.begin(), expected_result.end());
     std::sort(obtained_result.begin(), obtained_result.end());
